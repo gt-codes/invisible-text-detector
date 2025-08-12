@@ -11,16 +11,16 @@
   ],
   "commands": [
     {
-      "name": "fix-invisible-characters",
-      "title": "Fix Invisible Characters",
-      "description": "Removes invisible characters from input text.",
-      "mode": "no-view"
-    },
-    {
       "name": "open-invisible-text-detector",
       "title": "Open Invisible Text Detector",
       "description": "Analyze, reveal and clean invisible / Unicode characters.",
       "mode": "view"
+    },
+    {
+      "name": "fix-invisible-characters",
+      "title": "Fix Invisible Characters",
+      "description": "Removes invisible characters from input text.",
+      "mode": "no-view"
     },
     {
       "name": "analyze-clipboard-invisible-characters",
