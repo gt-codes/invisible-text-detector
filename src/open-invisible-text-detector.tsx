@@ -1,16 +1,5 @@
-import {
-  Action,
-  ActionPanel,
-  Clipboard,
-  Detail,
-  Form,
-  LocalStorage,
-  Toast,
-  showToast,
-  useNavigation,
-  Icon,
-} from "@raycast/api";
-import { useEffect, useMemo, useState } from "react";
+import { Action, ActionPanel, Clipboard, Detail, Form, Toast, showToast, useNavigation, Icon } from "@raycast/api";
+import { useMemo, useState } from "react";
 import { analyzeText } from "./lib/analyze";
 import { INVISIBLE_CLASS } from "./lib/sets";
 import { fixAllUnicode, fixInvisibleOnly } from "./lib/clean";
@@ -27,17 +16,6 @@ export default function Command() {
     showNonKeyboard: prefs.previewShowNonKeyboard,
     showUnicodeTags: prefs.previewShowUnicodeTags,
   });
-
-  useEffect(() => {
-    (async () => {
-      const saved = await LocalStorage.getItem<string>("last-input");
-      if (saved) setText(saved);
-    })();
-  }, []);
-
-  useEffect(() => {
-    LocalStorage.setItem("last-input", text);
-  }, [text]);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
   const preview = useMemo(() => buildPreview(text, previewFlags), [text, previewFlags]);
@@ -56,7 +34,7 @@ export default function Command() {
               setText(cleaned);
               await showToast({ style: Toast.Style.Success, title: "Removed invisible characters" });
             }}
-            shortcut={{ modifiers: ["cmd"], key: "enter" }}
+            shortcut={{ modifiers: ["cmd"], key: "i" }}
           />
           <Action
             title="Fix All Unicode Characters"
@@ -66,7 +44,7 @@ export default function Command() {
               setText(cleaned);
               await showToast({ style: Toast.Style.Success, title: "Normalized Unicode to ASCII" });
             }}
-            shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "i" }}
           />
           <Action.CopyToClipboard
             title="Copy Cleaned Text"
@@ -140,7 +118,7 @@ export default function Command() {
         text={`Invisible: ${analysis.invisible.count}  •  Non-Keyboard: ${analysis.nonKeyboard.count}  •  Special Spaces: ${analysis.specialSpaces.count}`}
       />
       <Form.Separator />
-      <Form.Description title="Preview (toggles)" text={"Use actions to toggle markers"} />
+      <Form.Description title="Preview" text={"Use actions to toggle markers"} />
       <Form.Checkbox
         id="spaces"
         label="Show Spaces"
