@@ -38,5 +38,3 @@ export async function readPreferredTextSource(prefs: Preferences): Promise<strin
 
 export { analyzeText };
 export { fixInvisibleOnly, fixAllUnicode } from "./clean";
-
-

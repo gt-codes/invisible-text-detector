@@ -7,7 +7,11 @@ export default async function main() {
   try {
     const original = await readPreferredTextSource(prefs);
     if (!original) {
-      await Ray.showHUD("No text selected or in clipboard");
+      await Ray.showToast({
+        style: Ray.Toast.Style.Failure,
+        title: "No text to process",
+        message: "Select text or copy it to the clipboard",
+      });
       return;
     }
 
