@@ -1,4 +1,15 @@
-import * as Ray from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Clipboard,
+  Detail,
+  Form,
+  LocalStorage,
+  Toast,
+  showToast,
+  useNavigation,
+  Icon,
+} from "@raycast/api";
 import { useEffect, useMemo, useState } from "react";
 import { analyzeText } from "./lib/analyze";
 import { INVISIBLE_CLASS } from "./lib/sets";
@@ -19,66 +30,73 @@ export default function Command() {
 
   useEffect(() => {
     (async () => {
-      const saved = await Ray.LocalStorage.getItem<string>("last-input");
+      const saved = await LocalStorage.getItem<string>("last-input");
       if (saved) setText(saved);
     })();
   }, []);
 
   useEffect(() => {
-    Ray.LocalStorage.setItem("last-input", text);
+    LocalStorage.setItem("last-input", text);
   }, [text]);
 
   const analysis = useMemo(() => analyzeText(text), [text]);
   const preview = useMemo(() => buildPreview(text, previewFlags), [text, previewFlags]);
 
-  const { push } = Ray.useNavigation();
+  const { push } = useNavigation();
 
   return (
-    <Ray.Form
+    <Form
       actions={
-        <Ray.ActionPanel>
-          <Ray.Action
-            title="Fix ONLY Invisible Characters"
+        <ActionPanel>
+          <Action
+            title="Fix Only Invisible Characters"
+            icon={Icon.Eraser}
             onAction={async () => {
               const cleaned = fixInvisibleOnly(text, prefs);
               setText(cleaned);
-              await Ray.showToast({ style: Ray.Toast.Style.Success, title: "Removed invisible characters" });
+              await showToast({ style: Toast.Style.Success, title: "Removed invisible characters" });
             }}
             shortcut={{ modifiers: ["cmd"], key: "enter" }}
           />
-          <Ray.Action
-            title="Fix ALL Unicode Characters"
+          <Action
+            title="Fix All Unicode Characters"
+            icon={Icon.Wand}
             onAction={async () => {
               const cleaned = fixAllUnicode(text, prefs);
               setText(cleaned);
-              await Ray.showToast({ style: Ray.Toast.Style.Success, title: "Normalized Unicode to ASCII" });
+              await showToast({ style: Toast.Style.Success, title: "Normalized Unicode to ASCII" });
             }}
             shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
           />
-          <Ray.Action.CopyToClipboard
+          <Action.CopyToClipboard
             title="Copy Cleaned Text"
+            icon={Icon.Clipboard}
             content={text}
             shortcut={{ modifiers: ["cmd"], key: "c" }}
           />
-          <Ray.Action
+          <Action
             title="Paste Cleaned Text"
+            icon={Icon.Document}
             onAction={async () => {
-              await Ray.Clipboard.copy(text);
-              await Ray.showToast({ style: Ray.Toast.Style.Success, title: "Copied cleaned text. Paste with ⌘V" });
+              await Clipboard.copy(text);
+              await showToast({ style: Toast.Style.Success, title: "Copied cleaned text. Paste with ⌘V" });
             }}
           />
-          <Ray.Action
+          <Action
             title="See Example"
+            icon={Icon.Text}
             onAction={() => setText(EXAMPLE)}
             shortcut={{ modifiers: ["cmd"], key: "e" }}
           />
-          <Ray.Action
+          <Action
             title="Analyze Details"
+            icon={Icon.Info}
             onAction={() => push(<AnalysisDetail text={text} />)}
             shortcut={{ modifiers: ["cmd"], key: "d" }}
           />
-          <Ray.Action
+          <Action
             title="Copy Analysis"
+            icon={Icon.Clipboard}
             onAction={async () => {
               const a = analyzeText(text);
               const summary = [
@@ -88,64 +106,70 @@ export default function Command() {
                 `Non-Keyboard: ${a.nonKeyboard.codePoints.join(", ") || "-"}`,
                 `Special Spaces: ${a.specialSpaces.codePoints.join(", ") || "-"}`,
               ].join("\n");
-              await Ray.Clipboard.copy(summary);
-              await Ray.showToast({ style: Ray.Toast.Style.Success, title: "Copied analysis" });
+              await Clipboard.copy(summary);
+              await showToast({ style: Toast.Style.Success, title: "Copied analysis" });
             }}
             shortcut={{ modifiers: ["cmd", "shift"], key: "c" }}
           />
-          <Ray.Action title="Clear" onAction={() => setText("")} shortcut={{ modifiers: ["cmd"], key: "backspace" }} />
-        </Ray.ActionPanel>
+          <Action
+            title="Clear"
+            icon={Icon.Trash}
+            onAction={() => setText("")}
+            shortcut={{ modifiers: ["cmd"], key: "backspace" }}
+          />
+        </ActionPanel>
       }
     >
-      <Ray.Form.TextArea
+      <Form.TextArea
         id="input"
         title="Input Text"
+        placeholder="Paste or type text to analyze for invisible characters…"
         value={text}
         onChange={setText}
         autoFocus
         enableMarkdown={false}
       />
 
-      <Ray.Form.Separator />
-      <Ray.Form.Description
+      <Form.Separator />
+      <Form.Description
         title="Character Analysis"
         text={`Visible: ${analysis.totalCharacters - analysis.invisible.count}  |  Invisible: ${analysis.invisible.count}\n# Characters: ${analysis.totalCharacters}   # Words: ${analysis.totalWords}`}
       />
-      <Ray.Form.Description
+      <Form.Description
         title="Detected"
         text={`Invisible: ${analysis.invisible.count}  •  Non-Keyboard: ${analysis.nonKeyboard.count}  •  Special Spaces: ${analysis.specialSpaces.count}`}
       />
-      <Ray.Form.Separator />
-      <Ray.Form.Description title="Preview (toggles)" text={"Use actions to toggle markers"} />
-      <Ray.Form.Checkbox
+      <Form.Separator />
+      <Form.Description title="Preview (toggles)" text={"Use actions to toggle markers"} />
+      <Form.Checkbox
         id="spaces"
         label="Show Spaces"
         value={previewFlags.showSpaces}
         onChange={(v: boolean) => setPreviewFlags((f) => ({ ...f, showSpaces: v }))}
       />
-      <Ray.Form.Checkbox
+      <Form.Checkbox
         id="nonkbd"
         label="Show Non-Keyboard"
         value={previewFlags.showNonKeyboard}
         onChange={(v: boolean) => setPreviewFlags((f) => ({ ...f, showNonKeyboard: v }))}
       />
-      <Ray.Form.Checkbox
+      <Form.Checkbox
         id="unicode"
         label="Show [U+XXXX]"
         value={previewFlags.showUnicodeTags}
         onChange={(v: boolean) => setPreviewFlags((f) => ({ ...f, showUnicodeTags: v }))}
       />
-      <Ray.Form.Separator />
-      <Ray.Form.Description title="Revealed & Highlighted" text={preview} />
-      <Ray.Form.Separator />
-      <Ray.Form.Description title="Legend" text={"Markers used in the preview:"} />
-      <Ray.Form.Description title="🟪 Invisible" text={"Zero-width/control/filler characters"} />
-      <Ray.Form.Description title="🟩 Non-keyboard" text={"Smart quotes, dashes, ellipsis"} />
-      <Ray.Form.Description title="· Space" text={"Regular space (when Show Spaces is enabled)"} />
-      <Ray.Form.Description title="⍽ NBSP" text={"Non-breaking space"} />
-      <Ray.Form.Description title="→ Tab" text={"Tab character"} />
-      <Ray.Form.Description title="[U+XXXX]" text={"Code point tag (annotation only)"} />
-    </Ray.Form>
+      <Form.Separator />
+      <Form.Description title="Revealed & Highlighted" text={preview} />
+      <Form.Separator />
+      <Form.Description title="Legend" text={"Markers used in the preview:"} />
+      <Form.Description title="🟪 Invisible" text={"Zero-width/control/filler characters"} />
+      <Form.Description title="🟩 Non-keyboard" text={"Smart quotes, dashes, ellipsis"} />
+      <Form.Description title="· Space" text={"Regular space (when Show Spaces is enabled)"} />
+      <Form.Description title="⍽ NBSP" text={"Non-breaking space"} />
+      <Form.Description title="→ Tab" text={"Tab character"} />
+      <Form.Description title="[U+XXXX]" text={"Code point tag (annotation only)"} />
+    </Form>
   );
 }
 
@@ -188,5 +212,5 @@ function AnalysisDetail({ text }: { text: string }) {
     `- Non-Keyboard: ${a.nonKeyboard.count} (${a.nonKeyboard.codePoints.join(", ")})`,
     `- Special Spaces: ${a.specialSpaces.count} (${a.specialSpaces.codePoints.join(", ")})`,
   ].join("\n");
-  return <Ray.Detail markdown={md} />;
+  return <Detail markdown={md} />;
 }

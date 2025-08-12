@@ -3,7 +3,7 @@
   "name": "invisible-text-detector",
   "title": "Invisible Text Detector",
   "description": "Remove all hidden Unicode characters in your text, usually injected by LLMs.",
-  "icon": "extension-icon.png",
+  "icon": "icon.png",
   "author": "garrett",
   "license": "MIT",
   "categories": [
