@@ -55,5 +55,3 @@ function uniqueCodePoints(chars: string[]): string[] {
   }
   return [...set];
 }
-
-

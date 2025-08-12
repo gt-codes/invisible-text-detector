@@ -16,8 +16,7 @@ export default async function main() {
     }
 
     const analysisBefore = analyzeText(original);
-    const cleaned =
-      prefs.defaultCleanMode === "all" ? fixAllUnicode(original, prefs) : fixInvisibleOnly(original, prefs);
+    const cleaned = prefs.defaultCleanMode === "all" ? fixAllUnicode(original, prefs) : fixInvisibleOnly(original);
     const analysisAfter = analyzeText(cleaned);
 
     if (prefs.actionAfterClean === "paste") {

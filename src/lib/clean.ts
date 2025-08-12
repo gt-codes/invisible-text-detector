@@ -1,7 +1,7 @@
 import { FILLERS_CLASS, INVISIBLE_CLASS, SPECIAL_SPACES_CLASS, ASCII_ALLOWED_IN_ALL } from "./sets";
 import type { Preferences } from "./runtime";
 
-export function fixInvisibleOnly(text: string, _prefs: Preferences): string {
+export function fixInvisibleOnly(text: string): string {
   const re = new RegExp(`${INVISIBLE_CLASS}|${FILLERS_CLASS}`, "gu");
   return text.replace(re, "");
 }

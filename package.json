@@ -7,8 +7,7 @@
   "author": "garrett",
   "license": "MIT",
   "categories": [
-    "Developer Tools",
-    "Utilities"
+    "Developer Tools"
   ],
   "commands": [
     {
@@ -36,6 +35,7 @@
       "title": "Default Clean Mode (Quick Commands)",
       "description": "Which cleaning strategy to use for the one-shot, no-view command by default.",
       "type": "dropdown",
+      "required": false,
       "default": "invisible",
       "data": [
         {
@@ -53,6 +53,7 @@
       "title": "Prefer Selected Text over Clipboard",
       "description": "If enabled, commands try to use the current selection first, then fall back to the clipboard.",
       "type": "checkbox",
+      "required": false,
       "label": "Use selected text when available",
       "default": true
     },
@@ -61,6 +62,7 @@
       "title": "After Clean (Quick Commands)",
       "description": "What to do with the cleaned text when using a no-view command.",
       "type": "dropdown",
+      "required": false,
       "default": "copy",
       "data": [
         {
@@ -78,6 +80,7 @@
       "title": "Show Summary Toasts",
       "description": "Show a toast with a short summary after running commands.",
       "type": "checkbox",
+      "required": false,
       "label": "Show toast summaries",
       "default": true
     },
@@ -86,6 +89,7 @@
       "title": "Replace NBSP with Space (All Unicode)",
       "description": "Replace non-breaking spaces with regular spaces when normalizing all Unicode.",
       "type": "checkbox",
+      "required": false,
       "label": "NBSP → Space",
       "default": true
     },
@@ -94,6 +98,7 @@
       "title": "Convert Smart Quotes (All Unicode)",
       "description": "Convert curly quotes to straight ASCII quotes when normalizing all Unicode.",
       "type": "checkbox",
+      "required": false,
       "label": "Curly quotes → Straight quotes",
       "default": true
     },
@@ -102,6 +107,7 @@
       "title": "Convert En/Em Dashes (All Unicode)",
       "description": "Convert en/em dashes to a regular ASCII hyphen when normalizing all Unicode.",
       "type": "checkbox",
+      "required": false,
       "label": "– — → -",
       "default": true
     },
@@ -110,6 +116,7 @@
       "title": "Replace Ellipsis with ... (All Unicode)",
       "description": "Replace the ellipsis character with three ASCII dots when normalizing all Unicode.",
       "type": "checkbox",
+      "required": false,
       "label": "… → ...",
       "default": true
     },
@@ -118,6 +125,7 @@
       "title": "Tab Width for Replacement (All Unicode)",
       "description": "How many spaces to use when replacing tabs during normalization.",
       "type": "textfield",
+      "required": false,
       "default": "4"
     },
     {
@@ -125,6 +133,7 @@
       "title": "Collapse Multiple Spaces (All Unicode)",
       "description": "Reduce repeated spaces to a single space after normalization.",
       "type": "checkbox",
+      "required": false,
       "label": "Collapse repeated spaces",
       "default": false
     },
@@ -133,6 +142,7 @@
       "title": "Normalize NFKD & Remove Combining Marks (All Unicode)",
       "description": "Use NFKD normalization and strip combining marks when normalizing.",
       "type": "checkbox",
+      "required": false,
       "label": "NFKD normalize & strip marks",
       "default": true
     },
@@ -141,6 +151,7 @@
       "title": "UI Preview: Show Spaces",
       "description": "Display visual markers for spaces, tabs, and NBSP in the preview.",
       "type": "checkbox",
+      "required": false,
       "label": "Reveal spaces",
       "default": false
     },
@@ -149,6 +160,7 @@
       "title": "UI Preview: Show Non-Keyboard Unicode",
       "description": "Highlight visible but non-keyboard characters (smart quotes, dashes, ellipsis) in the preview.",
       "type": "checkbox",
+      "required": false,
       "label": "Reveal non-keyboard characters",
       "default": true
     },
@@ -157,6 +169,7 @@
       "title": "UI Preview: Show [U+XXXX] Tags",
       "description": "Append [U+XXXX] code point tags after non-ASCII characters in the preview.",
       "type": "checkbox",
+      "required": false,
       "label": "Show [U+XXXX] tags",
       "default": false
     }

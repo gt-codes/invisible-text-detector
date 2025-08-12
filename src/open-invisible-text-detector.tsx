@@ -30,7 +30,7 @@ export default function Command() {
             title="Fix Only Invisible Characters"
             icon={Icon.Eraser}
             onAction={async () => {
-              const cleaned = fixInvisibleOnly(text, prefs);
+              const cleaned = fixInvisibleOnly(text);
               setText(cleaned);
               await showToast({ style: Toast.Style.Success, title: "Removed invisible characters" });
             }}
