@@ -1,17 +1,16 @@
 import { FILLERS_CLASS, INVISIBLE_CLASS, SPECIAL_SPACES_CLASS, ASCII_ALLOWED_IN_ALL } from "./sets";
 
 // Minimal shape of preferences consumed by the cleaning logic
-type CleanPreferences = Pick<
-  Preferences,
-  | "replaceNBSPWithSpace"
-  | "convertSmartQuotes"
-  | "convertDashes"
-  | "replaceEllipsis"
-  | "tabWidth"
-  | "collapseMultipleSpaces"
-  | "normalizeNFKD"
-  | "enforceAsciiOutput"
->;
+type CleanPreferences = {
+  replaceNBSPWithSpace: boolean;
+  convertSmartQuotes: boolean;
+  convertDashes: boolean;
+  replaceEllipsis: boolean;
+  tabWidth: number;
+  collapseMultipleSpaces: boolean;
+  normalizeNFKD: boolean;
+  enforceAsciiOutput?: boolean;
+};
 
 export function fixInvisibleOnly(text: string): string {
   const re = new RegExp(`${INVISIBLE_CLASS}|${FILLERS_CLASS}`, "gu");
@@ -42,8 +41,7 @@ export function fixAllUnicode(text: string, prefs: CleanPreferences): string {
   }
 
   // Tabs
-  const tabWidth = Math.max(0, Number.parseInt(String(prefs.tabWidth || 4), 10) || 4);
-  result = result.replace(/\t/gu, " ".repeat(tabWidth));
+  result = result.replace(/\t/gu, " ".repeat(Math.max(0, prefs.tabWidth)));
 
   // Remove invisible & fillers
   result = result.replace(new RegExp(`${INVISIBLE_CLASS}|${FILLERS_CLASS}`, "gu"), "");

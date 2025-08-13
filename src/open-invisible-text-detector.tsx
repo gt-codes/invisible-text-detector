@@ -1,9 +1,21 @@
-import { Action, ActionPanel, Clipboard, Detail, Form, Toast, showToast, useNavigation, Icon } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Clipboard,
+  Detail,
+  Form,
+  Toast,
+  showToast,
+  useNavigation,
+  Icon,
+  closeMainWindow,
+  showHUD,
+} from "@raycast/api";
 import { useMemo, useState } from "react";
 import { analyzeText } from "./lib/analyze";
 import { INVISIBLE_CLASS } from "./lib/sets";
 import { fixAllUnicode, fixInvisibleOnly } from "./lib/clean";
-import { getPreferences } from "./lib/runtime";
+import { getNormalizedPreferences } from "./lib/runtime";
 
 // Precompile regexes to avoid recreating them in hot paths
 const INVISIBLE_REGEX = new RegExp(INVISIBLE_CLASS, "u");
@@ -13,7 +25,7 @@ const EXAMPLE =
   "Hollywood is making a movie about your life, but it has to be in the style of a famous Black film or show (e.g., “Love Jones” vibe, “Insecure” style). Which one are you choosing?\nZWSP:\u200B Soft hyphen:\u00AD NBSP:\u00A0 Em—dash";
 
 export default function Command() {
-  const prefs = getPreferences();
+  const prefs = getNormalizedPreferences();
   const [text, setText] = useState("");
   const [previewFlags, setPreviewFlags] = useState({
     showSpaces: prefs.previewShowSpaces,
@@ -61,8 +73,9 @@ export default function Command() {
             title="Paste Cleaned Text"
             icon={Icon.Document}
             onAction={async () => {
-              await Clipboard.copy(text);
-              await showToast({ style: Toast.Style.Success, title: "Copied cleaned text. Paste with ⌘V" });
+              await closeMainWindow();
+              await Clipboard.paste(text);
+              await showHUD("Pasted cleaned text");
             }}
           />
           <Action

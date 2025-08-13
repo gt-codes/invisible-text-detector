@@ -1,11 +1,11 @@
 import * as Ray from "@raycast/api";
 import { analyzeText } from "./lib/analyze";
-import { fixAllUnicode, fixInvisibleOnly, getPreferences, readPreferredTextSource } from "./lib/runtime";
+import { fixAllUnicode, fixInvisibleOnly, getNormalizedPreferences, readPreferredTextSource } from "./lib/runtime";
 
 export default async function main() {
-  const prefs = getPreferences();
+  const prefs = getNormalizedPreferences();
   try {
-    const original = await readPreferredTextSource(prefs);
+    const original = await readPreferredTextSource({ preferSelectedText: prefs.preferSelectedText });
     if (!original) {
       await Ray.showToast({
         style: Ray.Toast.Style.Failure,
