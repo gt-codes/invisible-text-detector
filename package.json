@@ -121,6 +121,15 @@
       "default": true
     },
     {
+      "name": "enforceAsciiOutput",
+      "title": "Enforce ASCII-only Output (All Unicode)",
+      "description": "After conversions, remove any remaining non-ASCII characters. Disable to preserve legitimate international text.",
+      "type": "checkbox",
+      "required": false,
+      "label": "Strip remaining non-ASCII",
+      "default": true
+    },
+    {
       "name": "tabWidth",
       "title": "Tab Width for Replacement (All Unicode)",
       "description": "How many spaces to use when replacing tabs during normalization.",

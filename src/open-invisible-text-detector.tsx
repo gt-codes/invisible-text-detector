@@ -46,7 +46,8 @@ export default function Command() {
             onAction={async () => {
               const cleaned = fixAllUnicode(text, prefs);
               setText(cleaned);
-              await showToast({ style: Toast.Style.Success, title: "Normalized Unicode to ASCII" });
+              const title = prefs.enforceAsciiOutput ? "Normalized Unicode to ASCII" : "Normalized Unicode";
+              await showToast({ style: Toast.Style.Success, title });
             }}
             shortcut={{ modifiers: ["cmd", "shift"], key: "i" }}
           />

@@ -1,12 +1,24 @@
 import { FILLERS_CLASS, INVISIBLE_CLASS, SPECIAL_SPACES_CLASS, ASCII_ALLOWED_IN_ALL } from "./sets";
-import type { Preferences } from "./runtime";
+
+// Minimal shape of preferences consumed by the cleaning logic
+type CleanPreferences = Pick<
+  Preferences,
+  | "replaceNBSPWithSpace"
+  | "convertSmartQuotes"
+  | "convertDashes"
+  | "replaceEllipsis"
+  | "tabWidth"
+  | "collapseMultipleSpaces"
+  | "normalizeNFKD"
+  | "enforceAsciiOutput"
+>;
 
 export function fixInvisibleOnly(text: string): string {
   const re = new RegExp(`${INVISIBLE_CLASS}|${FILLERS_CLASS}`, "gu");
   return text.replace(re, "");
 }
 
-export function fixAllUnicode(text: string, prefs: Preferences): string {
+export function fixAllUnicode(text: string, prefs: CleanPreferences): string {
   let result = text;
 
   // Replace special spaces
@@ -41,8 +53,10 @@ export function fixAllUnicode(text: string, prefs: Preferences): string {
     result = result.normalize("NFKD").replace(/\p{M}+/gu, "");
   }
 
-  // Remove any remaining non-ASCII (except newline and spaces)
-  result = [...result].filter((ch) => ASCII_ALLOWED_IN_ALL.test(ch)).join("");
+  // Optionally remove any remaining non-ASCII (except newline, tab and spaces)
+  if (prefs.enforceAsciiOutput) {
+    result = [...result].filter((ch) => ASCII_ALLOWED_IN_ALL.test(ch)).join("");
+  }
 
   if (prefs.collapseMultipleSpaces) {
     result = result.replace(/ {2,}/g, " ");

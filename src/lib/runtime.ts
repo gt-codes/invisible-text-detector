@@ -1,23 +1,5 @@
 import { getPreferenceValues, Clipboard, getSelectedText } from "@raycast/api";
 import { analyzeText } from "./analyze";
-export type CleanMode = "invisible" | "all";
-
-export interface Preferences {
-  defaultCleanMode: CleanMode;
-  preferSelectedText: boolean;
-  actionAfterClean: "copy" | "paste";
-  showToasts: boolean;
-  replaceNBSPWithSpace: boolean;
-  convertSmartQuotes: boolean;
-  convertDashes: boolean;
-  replaceEllipsis: boolean;
-  tabWidth: number | string;
-  collapseMultipleSpaces: boolean;
-  normalizeNFKD: boolean;
-  previewShowSpaces: boolean;
-  previewShowNonKeyboard: boolean;
-  previewShowUnicodeTags: boolean;
-}
 
 export function getPreferences(): Preferences {
   return getPreferenceValues<Preferences>();

@@ -27,7 +27,8 @@ export default async function main() {
     }
 
     if (prefs.showToasts) {
-      const modeLabel = prefs.defaultCleanMode === "all" ? "All Unicode" : "Only Invisible";
+      const asciiSuffix = prefs.defaultCleanMode === "all" && prefs.enforceAsciiOutput ? " → ASCII" : "";
+      const modeLabel = prefs.defaultCleanMode === "all" ? `All Unicode${asciiSuffix}` : "Only Invisible";
       await Ray.showToast({
         style: Ray.Toast.Style.Success,
         title: `Cleaned text (${modeLabel})`,
