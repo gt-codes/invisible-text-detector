@@ -103,21 +103,21 @@
       "default": true
     },
     {
-      "name": "convertDashes",
-      "title": "Convert En/Em Dashes (All Unicode)",
-      "description": "Convert en/em dashes to a regular ASCII hyphen when normalizing all Unicode.",
-      "type": "checkbox",
-      "required": false,
-      "label": "– — → -",
-      "default": true
-    },
-    {
       "name": "replaceEllipsis",
       "title": "Replace Ellipsis with ... (All Unicode)",
       "description": "Replace the ellipsis character with three ASCII dots when normalizing all Unicode.",
       "type": "checkbox",
       "required": false,
       "label": "… → ...",
+      "default": true
+    },
+    {
+      "name": "convertDashes",
+      "title": "Convert En/Em Dashes (All Unicode)",
+      "description": "Convert en/em dashes to a regular ASCII hyphen when normalizing all Unicode.",
+      "type": "checkbox",
+      "required": false,
+      "label": "– — → -",
       "default": true
     },
     {
